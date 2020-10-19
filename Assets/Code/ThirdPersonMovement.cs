@@ -37,10 +37,10 @@ public class ThirdPersonMovement : MonoBehaviour
         // Reset velocity when grounded
         if(isGrounded && velocity.y < 0)
         {
-            velocity.y = -0.2f;
+            velocity.y = -0.01f;
             animator.SetTrigger("isGrounded");
 
-            // Jump Logic
+            // Detect jump input
             if (Input.GetButtonDown("Jump"))
             {
                 animator.SetTrigger("JumpClicked");
