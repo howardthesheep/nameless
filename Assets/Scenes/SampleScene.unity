@@ -213,13 +213,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185174522}
-  m_LocalRotation: {x: 0.48570833, y: 0.008009567, z: -0.0044507873, w: 0.87407297}
-  m_LocalPosition: {x: -1.31, y: 8.62, z: -19.39}
+  m_LocalRotation: {x: 0.38266733, y: 0.008465362, z: -0.0035064674, w: 0.92384076}
+  m_LocalPosition: {x: -1, y: 6, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 81316016}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 58.12, y: 1.05, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 1.05, z: 0}
 --- !u!114 &185174524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,8 +575,8 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: f4e047ce9eb6a714283ccc09905a1b45, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
+  m_TreeBillboardDistance: 100
+  m_TreeCrossFadeLength: 10
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
@@ -589,11 +589,11 @@ Terrain:
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: dafe27e18a3bf3240ab142c4885c744f, type: 2}
-  m_BakeLightProbesForTrees: 1
+  m_BakeLightProbesForTrees: 0
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
   m_ScaleInLightmap: 0.0256
-  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightmapParameters: {fileID: 15201, guid: 0000000000000000f000000000000000, type: 0}
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1

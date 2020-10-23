@@ -11,8 +11,8 @@ public class EagleEyeController : MonoBehaviour
     public Vector3 cameraOffset;
     public Animator animator;
     public float zoomSpeed = 4f;
-    public float minZoom = 1f;
-    public float maxZoom = 8f;
+    public float minZoom = 2f;
+    public float maxZoom = 6f;
 
     NavMeshAgent agent;
     Camera cam;
@@ -24,7 +24,7 @@ public class EagleEyeController : MonoBehaviour
     {
         // Init our camera, nav agent, and animator
         cam = Camera.main;
-        cameraOffset = new Vector3(0f, -1f, 0.33f);
+        cameraOffset = new Vector3(0f, -2f, 1.3f);
         agent = GetComponent<NavMeshAgent>();
     }
 
