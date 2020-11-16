@@ -11,12 +11,14 @@ public class EagleEyeController : MonoBehaviour
     public Vector3 cameraOffset;
     public Animator animator;
     public float zoomSpeed = 4f;
+    public float rotationSpeed = 4f;
     public float minZoom = 2f;
     public float maxZoom = 6f;
 
     NavMeshAgent agent;
     Camera cam;
 
+    private float currentRotation;
     private float currentZoom = 4f;
 
     // Start is called before the first frame update
@@ -76,12 +78,20 @@ public class EagleEyeController : MonoBehaviour
                 agent.SetDestination(hit.point);
             }
         }
+        
+        // If user middle clicks (Camera rotation)
+        if (Input.GetMouseButtonDown(2))
+        {
+            print("Middle Click!");
+            currentRotation += Input.GetAxis("Horizontal") * rotationSpeed;
+        }
     }
-
+    
     void LateUpdate()
     {
         // Adjust the camera position, ensure the player is still the focus
         cam.transform.position = agent.transform.position - cameraOffset * currentZoom;
+        cam.transform.Rotate(currentRotation, 0.0f, 0.0f, Space.Self); //TODO: fix this bc it doesn't work
         cam.transform.LookAt(agent.transform);
     }
 
