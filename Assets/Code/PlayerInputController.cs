@@ -2,22 +2,27 @@
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class InputController : MonoBehaviour
+public class PlayerInputController : MonoBehaviour
 {
     public LayerMask groundMask;
 
     private NavMeshAgent agent;
-    private Camera cam;
+    private PlayerCameraController CameraController;   
+    private float _zoomSpeed = 4.0f, _currentZoom;
 
     private void Start()
     {
-        // Grab our camera and NavMeshAgent
-        cam = Camera.main;
         agent = GetComponent<NavMeshAgent>();
+        CameraController = GetComponent<PlayerCameraController>();
     }
 
     private void Update()
     {
+        // Handle changes to camera zoom
+        Camera cam = CameraController.getCamera();
+        _currentZoom -= Input.GetAxis("Mouse ScrollWheel") * _zoomSpeed;
+        CameraController.setCurrentZoom(_currentZoom);
+        
         // If user left clicks (Focus)
         if (Input.GetMouseButtonDown(0))
         {
@@ -49,7 +54,7 @@ public class InputController : MonoBehaviour
         // If user middle clicks (Camera rotation)
         if (Input.GetMouseButtonDown(2))
         {
-            
+            Input.GetAxis("Horizontal");
         }
     }
 }
