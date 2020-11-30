@@ -5,16 +5,24 @@ using UnityEngine.AI;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    public Vector3 cameraOffset;
+    private const float CameraArcRadius = 4.5f;
+    private const float RotationSpeed = 5f;
+    private const float ZoomSpeed = 1f;
+    private const float MinZoom = 3f;
+    private const float MaxZoom = 1f;
     
+    [SerializeField]
+    private Vector3 cameraOffset;
     private Camera _cam;
     private NavMeshAgent _agent;
-    private float _currentZoom = 4f;
+    private float _currentZoom = MaxZoom;
+    
+
     private void Start()
     {
         _cam = Camera.main;
         _agent = GetComponent<NavMeshAgent>();
-        cameraOffset = new Vector3(0.0f, -4.45f, 4.5f);
+        cameraOffset = new Vector3(0.0f, -CameraArcRadius, CameraArcRadius);
     }
 
     private void Update()
@@ -31,19 +39,25 @@ public class PlayerCameraController : MonoBehaviour
     * Helper Functions for Private Variables
     * 
     **********************************************/
+
+    public Vector3 getCameraOffset()
+    {
+        return cameraOffset;
+    }
+    
+    public void setCameraOffset(float angle)
+    {
+        Quaternion camRotateAngle = Quaternion.AngleAxis(angle * RotationSpeed, Vector3.up);
+        cameraOffset = camRotateAngle * getCameraOffset();
+    }
     public Camera getCamera()
     {
         return _cam;
     }
-    
-    public float getCurrentZoom()
-    {
-        return _currentZoom;
-    }
 
     public void setCurrentZoom(float zoom)
     {
-        float _minZoom = 1.0f, _maxZoom = 8.0f;
-        _currentZoom = Mathf.Clamp(zoom, _minZoom, _maxZoom);
+        _currentZoom -= zoom * ZoomSpeed;
+        _currentZoom = Mathf.Clamp(_currentZoom, MaxZoom, MinZoom);
     }
 }

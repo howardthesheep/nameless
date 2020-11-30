@@ -1,29 +1,58 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerInputController : MonoBehaviour
 {
-    public LayerMask groundMask;
+    [SerializeField]
+    private LayerMask groundMask;
 
-    private NavMeshAgent agent;
-    private PlayerCameraController CameraController;   
-    private float _zoomSpeed = 4.0f, _currentZoom;
+    private float _zoomInput;
+    private FocusTarget _focusInput;
+
+    private PlayerCameraController pcc;
+    private PlayerMovementController pmc;
+    private bool _isRotating;
 
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        CameraController = GetComponent<PlayerCameraController>();
+        pcc = GetComponent<PlayerCameraController>();
+        pmc = GetComponent<PlayerMovementController>();
     }
 
     private void Update()
     {
-        // Handle changes to camera zoom
-        Camera cam = CameraController.getCamera();
-        _currentZoom -= Input.GetAxis("Mouse ScrollWheel") * _zoomSpeed;
-        CameraController.setCurrentZoom(_currentZoom);
+        Camera cam = pcc.getCamera();
         
-        // If user left clicks (Focus)
+        // Handle changes to camera zoom
+        _zoomInput = Input.GetAxis("Mouse ScrollWheel");
+        if (_zoomInput != 0f)
+        {
+            pcc.setCurrentZoom(_zoomInput);
+        }
+
+
+        // Rotation is disengaged
+        if (Input.GetMouseButtonUp(2))
+        {
+            _isRotating = false;
+        }
+
+        // Handle changes to camera rotation
+        if (Input.GetMouseButtonDown(2))
+        {
+            _isRotating = true;
+        }
+
+        if (_isRotating)
+        {
+            pcc.setCameraOffset(Input.GetAxis("Mouse X"));
+        }
+
+
+        // Left click (Focus)
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -37,24 +66,35 @@ public class PlayerInputController : MonoBehaviour
             }
         }
 
-        // If user right clicks (Movement)
+        // Right click (Movement)
         if(Input.GetMouseButtonDown(1))
         {
+            // Get the point on the ground that was clicked on screen
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
-            // Get the point on the ground that was clicked on screen
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                // Move player towards where they clicked on the ground layer and remove focus
-                agent.SetDestination(hit.point);
+                // Update movementInput
+                pmc.setDestination(hit.point);
             }
         }
-        
-        // If user middle clicks (Camera rotation)
-        if (Input.GetMouseButtonDown(2))
-        {
-            Input.GetAxis("Horizontal");
-        }
+    }
+
+    /********************************************** 
+    * 
+    * Helper Functions for Private Variables
+    * 
+    **********************************************/
+    public FocusTarget getFocus()
+    {
+        return _focusInput;
+    }
+
+    public enum FocusTarget
+    {
+        Unfocused,
+        Possessible,
+        Interactable,
+        Enemy
     }
 }
