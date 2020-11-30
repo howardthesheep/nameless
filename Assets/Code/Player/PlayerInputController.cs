@@ -14,10 +14,11 @@ public class PlayerInputController : MonoBehaviour
 
     private PlayerCameraController pcc;
     private PlayerMovementController pmc;
-    private bool _isRotating;
+    private PlayerAttackController pac;
 
     private void Start()
     {
+        pac = GetComponent<PlayerAttackController>();
         pcc = GetComponent<PlayerCameraController>();
         pmc = GetComponent<PlayerMovementController>();
     }
@@ -33,20 +34,8 @@ public class PlayerInputController : MonoBehaviour
             pcc.setCurrentZoom(_zoomInput);
         }
 
-
-        // Rotation is disengaged
-        if (Input.GetMouseButtonUp(2))
-        {
-            _isRotating = false;
-        }
-
         // Handle changes to camera rotation
-        if (Input.GetMouseButtonDown(2))
-        {
-            _isRotating = true;
-        }
-
-        if (_isRotating)
+        if (Input.GetMouseButton(2))
         {
             pcc.setCameraOffset(Input.GetAxis("Mouse X"));
         }
@@ -77,6 +66,19 @@ public class PlayerInputController : MonoBehaviour
                 // Update movementInput
                 pmc.setDestination(hit.point);
             }
+        }
+
+        // Handle 'Q' Attack
+        if (Input.GetKeyDown(KeyCode.Q) && !pac.isAttacking())
+        {
+            // Get point on ground under where mouse was hovering
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            {
+                pac.Q(pmc.agent.transform.position, hit.point);    
+            }
+            
         }
     }
 

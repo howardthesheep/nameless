@@ -23,4 +23,11 @@ public class PlayerMovementController : MonoBehaviour
     {
         _destination = dest;
     }
+
+    // Getter Setter for _agent
+    public NavMeshAgent agent
+    {
+        get => _agent;
+        set => _agent = value;
+    }
 }
